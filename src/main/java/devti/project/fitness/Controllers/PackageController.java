@@ -75,7 +75,7 @@ public class PackageController {
             		.price(pack.getPrice())
             		.description(pack.getDescription())
             		.durationInMonths(pack.getDurationInMonths())
-            		.paymentType(pack.getDescription())
+            		.paymentType(pack.getPaymentType().toString())
     				.build()
     				);
     		

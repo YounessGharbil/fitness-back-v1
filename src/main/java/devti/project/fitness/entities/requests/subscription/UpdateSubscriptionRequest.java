@@ -14,7 +14,7 @@ public class UpdateSubscriptionRequest {
 	
 	 private Long id;
 	 	 
-	 private Long package_id;
+	 private Long subscribedPackage_id;
 	 
 	 private String status;
 	 

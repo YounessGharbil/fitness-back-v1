@@ -56,28 +56,28 @@ public class SubscriptionController {
     private final UserAccountService userAccountService;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-
-    
-
-
-    
     
     @PostMapping
     public ResponseEntity<Subscription> createSubscription(@RequestBody CreateSubscriptionRequest createSubscriptionRequest) {
     	
     	Contact contact =contactService.getContact(createSubscriptionRequest.getSubscribedContact_id());
     	
+    	System.out.print(contact);
+    	
     	Package pack=packageService.getPackage(createSubscriptionRequest.getSubscribedPackage_id());
     	
     	Role role=roleService.getRoleByRole_name("ROLE_CLIENT");
     	
-    	UserAccount account=userAccountService.createUserAccount(UserAccount.builder()
+    	UserAccount account=userAccountService.createUserAccount(
+    			UserAccount.builder()
     			.password(passwordEncoder.encode("123456"))
     			.role(role)
     			.email(contact.getEmail())
     			.contact(contact)
     			.build());
-        
+    	
+    	System.out.print(account);
+
     	
         Date startDate = new Date();
                 
@@ -106,7 +106,7 @@ public class SubscriptionController {
         		.priceAfterDiscount(price-price*createSubscriptionRequest.getDiscount()/100)
         		.subscribedContact(contact)
         		.subscribedPackage(pack)
-        		.status(createSubscriptionRequest.getStatus())
+        		.status("ACTIVE")
         		.build()
         		
         				);
@@ -208,14 +208,19 @@ public class SubscriptionController {
     
     @PutMapping("/{id}")
     public ResponseEntity<Subscription> updateSubscription(@PathVariable Long id,@RequestBody UpdateSubscriptionRequest updateSubscriptionRequest) {
+    	System.out.println("----------------------------------------------------");
     	
+    	System.out.print(updateSubscriptionRequest);
+
+    	System.out.println("----------------------------------------------------");
     	Subscription sub=subscriptionService.getSubscription(id);
+    	
     	
     	double price=sub.getSubscribedPackage().getPrice();
        
-        if (updateSubscriptionRequest.getPackage_id()!=null) {
+        if (updateSubscriptionRequest.getSubscribedPackage_id()!=null) {
         	
-        	Package pack =packageService.getPackage(updateSubscriptionRequest.getPackage_id());
+        	Package pack =packageService.getPackage(updateSubscriptionRequest.getSubscribedPackage_id());
         	
         	 LocalDate existingEndDate = LocalDate.parse(sub.getEndDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
              
