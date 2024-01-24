@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateRoleRequest {
 	
-	private String roleName;
+	private String rolename;
 	 
 }

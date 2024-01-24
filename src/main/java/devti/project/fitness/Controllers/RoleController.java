@@ -32,7 +32,7 @@ public class RoleController {
 
 	        Role role =Role.builder()
 //	        		.authorities(createRoleRequest.getAuthorities())
-	        		.rolename(createRoleRequest.getRoleName())
+	        		.rolename(createRoleRequest.getRolename())
 	        		.build();
 		 
 	        return new ResponseEntity<>(roleService.createRole(role), HttpStatus.CREATED);
@@ -56,7 +56,7 @@ public class RoleController {
 	        GetRoleResponse response=GetRoleResponse.builder()
 	        		.id(role.getId())
 //	        		.authorities(role.getAuthorities())
-	        		.roleName(role.getRolename())
+	        		.rolename(role.getRolename())
 	        		.build();
 	        return new ResponseEntity<>(response,HttpStatus.OK);
 	    }

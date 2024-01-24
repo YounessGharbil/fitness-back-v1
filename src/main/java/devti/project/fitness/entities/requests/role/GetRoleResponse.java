@@ -13,6 +13,6 @@ public class GetRoleResponse {
 	
 	private Long id;
 
-	 private String roleName;
+	 private String rolename;
 	 
 }
