@@ -36,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 public class StaffController {
 	
     private final StaffService staffService;
-    private final ContactService contactService;
     private final UserAccountService userAccountService;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
@@ -48,7 +47,7 @@ public class StaffController {
         SimpleDateFormat gymIdDateFormat = new SimpleDateFormat("ddMMyyyyHHmmssSSS");
         String gymId = gymIdDateFormat.format(new Date());
 
-    	Contact contact=contactService.getContact(createStaffRequest.getContact_id());
+    	Contact contact=createStaffRequest.getContact();
     	
     	Role role=roleService.getRoleByRole_name(createStaffRequest.getRole_name());
     	

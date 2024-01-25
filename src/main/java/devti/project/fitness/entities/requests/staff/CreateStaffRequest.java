@@ -1,6 +1,7 @@
 package devti.project.fitness.entities.requests.staff;
 
 
+import devti.project.fitness.entities.Contact;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateStaffRequest {
 		
-	private Long contact_id;
+	private Contact contact;
 	
 	private String role_name;
 	
