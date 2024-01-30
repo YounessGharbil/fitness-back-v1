@@ -49,7 +49,7 @@ public class StaffController {
 
     	Contact contact=createStaffRequest.getContact();
     	
-    	Role role=roleService.getRoleByRole_name(createStaffRequest.getRole_name());
+    	Role role=roleService.getRoleByRole_name(createStaffRequest.getRolename());
     	
     	UserAccount account=userAccountService.createUserAccount(UserAccount.builder()
     			.password(passwordEncoder.encode("123456"))

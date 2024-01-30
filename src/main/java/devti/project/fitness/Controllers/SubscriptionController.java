@@ -106,7 +106,7 @@ public class SubscriptionController {
         		.priceAfterDiscount(price-price*createSubscriptionRequest.getDiscount()/100)
         		.subscribedContact(contact)
         		.subscribedPackage(pack)
-        		.status("ACTIVE")
+        		.status("active")
         		.build()
         		
         				);

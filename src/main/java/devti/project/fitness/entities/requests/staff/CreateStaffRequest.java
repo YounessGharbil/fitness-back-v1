@@ -15,6 +15,6 @@ public class CreateStaffRequest {
 		
 	private Contact contact;
 	
-	private String role_name;
+	private String rolename;
 	
 }
