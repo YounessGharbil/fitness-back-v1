@@ -50,6 +50,11 @@ public class StaffController {
     	Contact contact=createStaffRequest.getContact();
     	
     	Role role=roleService.getRoleByRole_name(createStaffRequest.getRolename());
+    	System.out.println(createStaffRequest.getRolename());
+    	System.out.println("--------------------------------------");
+    	System.out.println(role);
+    	System.out.println("--------------------------------------");
+
     	
     	UserAccount account=userAccountService.createUserAccount(UserAccount.builder()
     			.password(passwordEncoder.encode("123456"))
