@@ -47,5 +47,9 @@ public class Subscription {
 	 @JoinColumn(name="subscribedContact_id")
 	 private Contact subscribedContact;
 	 
+	 @OneToOne
+	 @JoinColumn(name="paymentMode_id")
+	 private PaymentMode paymentMode;
+	 
 
 }

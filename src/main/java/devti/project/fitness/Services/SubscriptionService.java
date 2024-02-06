@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import devti.project.fitness.Repositories.ClientRepository;
-import devti.project.fitness.Repositories.PackageRepository;
 import devti.project.fitness.Repositories.SubscriptionRepository;
 import devti.project.fitness.entities.Client;
 import devti.project.fitness.entities.Subscription;
@@ -19,7 +18,6 @@ public class SubscriptionService {
 	 
 	 private final ClientRepository clientRepository;
 	 
-	 private final PackageRepository packageRepository;
 
 
 
@@ -50,14 +48,6 @@ public class SubscriptionService {
 			 
 			 Subscription  sub=subscriptionRepository.findById(id).get();
 			 
-//			 Package pack=sub.getSubscribedPackage();
-			 
-//			 List<Subscription> subscribtions=pack.getSubscriptions();
-//			 System.out.print("--------------------------------------------");
-//			 System.out.print(subscribtions);
-//			 System.out.print("--------------------------------------------");
-			 
-//			 pack.setSubscriptions(subscribtions);
 			 
 		        Client  client =clientRepository.findByContact(sub.getSubscribedContact()).get();
 		        
@@ -65,11 +55,9 @@ public class SubscriptionService {
 		        
 		        clientRepository.save(client);
 		        
-//		        packageRepository.save(pack);
 			 
 			    subscriptionRepository.deleteById(id);
 			    
-//			    subscribtions.remove(sub);
 			 
 		        return "deleted successfully";
 		        

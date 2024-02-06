@@ -1,5 +1,6 @@
 package devti.project.fitness.entities.requests.subscription;
 
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,16 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSubscriptionRequest {
-	
-	 private int discount;
-	 	 
-	 private String status;
-	 
-	 private Long subscribedPackage_id;
-	
-	 private Long subscribedContact_id;
-	 
-	 private CreatePaymentModeRequest paymentMode;
+public class CreatePaymentModeRequest {
+
+    private List<CreatePaymentTrancheRequest> paymentTranches;
 
 }

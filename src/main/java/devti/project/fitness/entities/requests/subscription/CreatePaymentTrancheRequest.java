@@ -1,6 +1,6 @@
 package devti.project.fitness.entities.requests.subscription;
 
-
+import devti.project.fitness.entities.PaymentMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSubscriptionRequest {
+public class CreatePaymentTrancheRequest {
 	
-	 private int discount;
-	 	 
-	 private String status;
-	 
-	 private Long subscribedPackage_id;
-	
-	 private Long subscribedContact_id;
-	 
-	 private CreatePaymentModeRequest paymentMode;
+	private double amount;
+	private String dueDate;
+	private boolean isTranchePaid;
+	private PaymentMode paymentMode;
 
 }

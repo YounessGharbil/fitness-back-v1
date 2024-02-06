@@ -1,4 +1,4 @@
-	package devti.project.fitness.Controllers;
+package devti.project.fitness.Controllers;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import devti.project.fitness.Services.ClientService;
 import devti.project.fitness.Services.ContactService;
 import devti.project.fitness.Services.PackageService;
+import devti.project.fitness.Services.PaymentModeService;
+import devti.project.fitness.Services.PaymentTrancheService;
 import devti.project.fitness.Services.RoleService;
 import devti.project.fitness.Services.SubscriptionService;
 import devti.project.fitness.Services.UserAccountService;
@@ -30,10 +32,13 @@ import devti.project.fitness.entities.Client;
 import devti.project.fitness.entities.Contact;
 import devti.project.fitness.entities.Observation;
 import devti.project.fitness.entities.Package;
+import devti.project.fitness.entities.PaymentMode;
+import devti.project.fitness.entities.PaymentTranche;
 import devti.project.fitness.entities.Role;
 import devti.project.fitness.entities.Subscription;
 import devti.project.fitness.entities.UserAccount;
 import devti.project.fitness.entities.requests.pack.GetPackageResponse;
+import devti.project.fitness.entities.requests.subscription.CreatePaymentTrancheRequest;
 import devti.project.fitness.entities.requests.subscription.CreateSubscriptionRequest;
 import devti.project.fitness.entities.requests.subscription.GetSubscriptionResponse;
 import devti.project.fitness.entities.requests.subscription.UpdateSubscriptionRequest;
@@ -48,7 +53,6 @@ public class SubscriptionController {
 	
     Calendar calendar = Calendar.getInstance();
 
-	
     private final SubscriptionService subscriptionService;
     private final ContactService contactService;
     private final PackageService packageService;
@@ -56,14 +60,14 @@ public class SubscriptionController {
     private final UserAccountService userAccountService;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-    
+    private final PaymentTrancheService paymentTrancheService;
+    private final PaymentModeService paymentModeService;
+
     @PostMapping
-    public ResponseEntity<Subscription> createSubscription(@RequestBody CreateSubscriptionRequest createSubscriptionRequest) {
+    public ResponseEntity<Subscription> createSubscription(@RequestBody CreateSubscriptionRequest createSubscriptionRequest) { 	
     	
     	Contact contact =contactService.getContact(createSubscriptionRequest.getSubscribedContact_id());
-    	
-    	System.out.print(contact);
-    	
+    	    	
     	Package pack=packageService.getPackage(createSubscriptionRequest.getSubscribedPackage_id());
     	
     	Role role=roleService.getRoleByRole_name("ROLE_CLIENT");
@@ -76,14 +80,10 @@ public class SubscriptionController {
     			.contact(contact)
     			.build());
     	
-    	System.out.print(account);
-
-    	
         Date startDate = new Date();
                 
         calendar.setTime(startDate);
 
-    	
     	calendar.add(Calendar.MONTH, pack.getDurationInMonths());
     	
     	Date endDate = calendar.getTime();
@@ -95,10 +95,9 @@ public class SubscriptionController {
         
         SimpleDateFormat gymIdDateFormat = new SimpleDateFormat("ddMMyyyyHHmmssSSS");
         String gymId = gymIdDateFormat.format(new Date());
-
+        
     	Subscription sub=subscriptionService
-        		.createSubscription(
-        				
+        		.createSubscription(	
         		Subscription.builder()
         		.discount(createSubscriptionRequest.getDiscount())
         		.startDate(startDateString)
@@ -108,9 +107,34 @@ public class SubscriptionController {
         		.subscribedPackage(pack)
         		.status("active")
         		.build()
-        		
         				);
     	
+    	List<PaymentTranche> tranches=new ArrayList<PaymentTranche>();
+
+    	 for (CreatePaymentTrancheRequest paymentTrancheRequest :createSubscriptionRequest.getPaymentMode().getPaymentTranches()) {
+             PaymentTranche tranche=PaymentTranche.builder()
+            		 .amount(paymentTrancheRequest.getAmount())
+            		 .dueDate(paymentTrancheRequest.getDueDate())
+            		 .isTranchePaid(paymentTrancheRequest.isTranchePaid())
+            		 .paymentMode(null)
+            		 .build();
+             
+             tranches.add(tranche);
+         }
+    	
+    	PaymentMode paymentMode=PaymentMode.builder()
+    			.subscription(sub)
+    			.paymentTranches(tranches)
+    			.build();
+    	
+    	PaymentMode createdPaymentMode=paymentModeService.createPaymentMode(paymentMode);
+
+    	for(PaymentTranche paymentTranche:createdPaymentMode.getPaymentTranches()) {
+    		paymentTranche.setPaymentMode(createdPaymentMode);
+    		paymentTrancheService.updatePaymentTranche(paymentTranche);
+    		
+    	}
+
     	List<Subscription> subs=pack.getSubscriptions();
     	subs.add(sub);
     	
@@ -127,8 +151,7 @@ public class SubscriptionController {
     			.userAccount(account)
     			.build()
     			);
-    	
-       
+     
         return new ResponseEntity<>(sub, HttpStatus.CREATED);
         
     }
@@ -198,10 +221,8 @@ public class SubscriptionController {
             		.subscribedContact(sub.getSubscribedContact())
             		.subscribedPackage(package_response)
     				.build()
-    				);
-    		
+    				);   		
     	}
-
 
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
