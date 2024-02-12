@@ -20,7 +20,5 @@ public class GetPackageResponse {
 	    private String description;
 	    
 	    private int durationInMonths;
-	    
-	    private String paymentType;
-	   
+	    	   
 }

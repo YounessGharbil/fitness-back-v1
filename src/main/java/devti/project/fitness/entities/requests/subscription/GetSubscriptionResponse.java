@@ -1,5 +1,6 @@
 package devti.project.fitness.entities.requests.subscription;
 
+
 import devti.project.fitness.entities.Contact;
 import devti.project.fitness.entities.requests.pack.GetPackageResponse;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class GetSubscriptionResponse {
 	 private GetPackageResponse subscribedPackage;
 
 	 private Contact subscribedContact;
+	 	 
+	 private GetPaymentModeResponse paymentMode;
 	 
-
 }

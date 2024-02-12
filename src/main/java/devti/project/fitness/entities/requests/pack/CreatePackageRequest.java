@@ -1,6 +1,5 @@
 package devti.project.fitness.entities.requests.pack;
 
-import devti.project.fitness.entities.enums.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +19,4 @@ public class CreatePackageRequest {
 	    
 	    private int durationInMonths;
 	    
-	    private PaymentType paymentType;
-
 }

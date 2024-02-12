@@ -40,7 +40,6 @@ public class ContactController {
             		.codePostal(createContactRequest.getCodePostal())
             		.dateNaissance(createContactRequest.getDateNaissance())
             		.email(createContactRequest.getEmail())
-            		.pays(createContactRequest.getPays())
             		.tel(createContactRequest.getTel())
             		.sexe(createContactRequest.getSexe())
             		.ville(createContactRequest.getVille())
@@ -85,7 +84,6 @@ public class ContactController {
         contact.setCodePostal(updatContactRequest.getCodePostal());
         contact.setDateNaissance(updatContactRequest.getDateNaissance());
         contact.setEmail(updatContactRequest.getEmail());
-        contact.setPays(updatContactRequest.getPays());
         contact.setTel(updatContactRequest.getTel());
         contact.setSexe(updatContactRequest.getSexe());
         contact.setVille(updatContactRequest.getVille());

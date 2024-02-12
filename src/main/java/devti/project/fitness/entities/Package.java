@@ -7,10 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import devti.project.fitness.entities.enums.PaymentType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,9 +36,6 @@ public class Package {
     private String description;
     
     private int durationInMonths;
-    
-    @Enumerated(EnumType.STRING)
-    private PaymentType paymentType;
     
     @OneToMany(mappedBy = "subscribedPackage")
     @JsonIgnore

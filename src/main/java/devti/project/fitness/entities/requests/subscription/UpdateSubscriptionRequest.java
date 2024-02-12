@@ -1,6 +1,7 @@
 package devti.project.fitness.entities.requests.subscription;
 
 
+import devti.project.fitness.entities.PaymentMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class UpdateSubscriptionRequest {
 	 private String status;
 	 
 	 private int discount;
+	 
+	 private PaymentMode paymentMode; 
 	 
 
 }

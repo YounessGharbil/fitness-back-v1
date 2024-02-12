@@ -29,7 +29,6 @@ public  class Contact {
 	private String sexe;
 	private String adresse;
 	private String codePostal;
-	private String pays;
 	private String ville;
 	@NotNull
 	private String tel;

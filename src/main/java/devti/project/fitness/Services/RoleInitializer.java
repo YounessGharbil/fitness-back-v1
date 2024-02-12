@@ -23,7 +23,6 @@ public class RoleInitializer implements CommandLineRunner {
 	
 	private void initializeRoles() {
         createRoleIfNotExists("ROLE_CLIENT");
-        createRoleIfNotExists("ROLE_STAFF");
         createRoleIfNotExists("ROLE_ADMIN");
     }
 	

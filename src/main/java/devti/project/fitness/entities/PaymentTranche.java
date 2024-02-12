@@ -3,6 +3,9 @@ package devti.project.fitness.entities;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +32,7 @@ public class PaymentTranche {
 
     @ManyToOne
     @JoinColumn(name = "payment_mode_id")
+    @JsonIgnore
     private PaymentMode paymentMode;
 
     private double amount;

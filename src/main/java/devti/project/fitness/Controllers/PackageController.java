@@ -35,7 +35,6 @@ public class PackageController {
         		.durationInMonths(createPackageRequest.getDurationInMonths())
         		.packageName(createPackageRequest.getPackageName())
         		.price(createPackageRequest.getPrice())
-        		.paymentType(createPackageRequest.getPaymentType())        		
         		.build();
         
         return new ResponseEntity<>(packageService.createPackage(pack), HttpStatus.CREATED);
@@ -55,7 +54,6 @@ public class PackageController {
         		.price(pack.getPrice())
         		.description(pack.getDescription())
         		.durationInMonths(pack.getDurationInMonths())
-        		.paymentType(pack.getDescription())
         		.build();
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
@@ -75,7 +73,6 @@ public class PackageController {
             		.price(pack.getPrice())
             		.description(pack.getDescription())
             		.durationInMonths(pack.getDurationInMonths())
-            		.paymentType(pack.getPaymentType().toString())
     				.build()
     				);
     		
@@ -95,7 +92,6 @@ public class PackageController {
         pack.setDescription(updatPackageRequest.getDescription());
         pack.setPrice(updatPackageRequest.getPrice());
         pack.setDurationInMonths(updatPackageRequest.getDurationInMonths());
-        pack.setPaymentType(updatPackageRequest.getPaymentType());
         
        
 

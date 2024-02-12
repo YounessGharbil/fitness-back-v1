@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import devti.project.fitness.Services.ClientService;
 import devti.project.fitness.entities.Client;
 import devti.project.fitness.entities.Package;
+import devti.project.fitness.entities.PaymentMode;
 import devti.project.fitness.entities.Subscription;
 import devti.project.fitness.entities.UserAccount;
 import devti.project.fitness.entities.requests.client.GetClientResponse;
 import devti.project.fitness.entities.requests.pack.GetPackageResponse;
+import devti.project.fitness.entities.requests.subscription.GetPaymentModeResponse;
 import devti.project.fitness.entities.requests.subscription.GetSubscriptionResponse;
 import devti.project.fitness.entities.requests.user.GetUserAccountResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,14 @@ public class ClientController {
 	        
 	        try {
 				
-	        	 Subscription sub=client.getSubscription();
+	        	Subscription sub=client.getSubscription();
+	        	
+	        	 PaymentMode paymentMode = sub.getPaymentMode();
+	             
+	             GetPaymentModeResponse paymentModeResponse=GetPaymentModeResponse.builder()
+	             		.id(paymentMode.getId())
+	             		.paymentTranches(paymentMode.getPaymentTranches())
+	             		.build();
 	 	        
 	 	        UserAccount user=client.getUserAccount();
 	 	        
@@ -51,7 +60,6 @@ public class ClientController {
 	 	        		.price(pack.getPrice())
 	 	        		.description(pack.getDescription())
 	 	        		.durationInMonths(pack.getDurationInMonths())
-	 	        		.paymentType(pack.getDescription())
 	 	        		.build();
 	 	        
 	 	        GetSubscriptionResponse subscriptionResponse=GetSubscriptionResponse.builder()
@@ -63,6 +71,7 @@ public class ClientController {
 	 	        		.status(sub.getStatus())
 	 	        		.subscribedContact(sub.getSubscribedContact())
 	 	        		.subscribedPackage(package_response)
+	 	        		.paymentMode(paymentModeResponse)
 	 	        		.build();
 	 	        
 	 	        GetUserAccountResponse getUserAccountResponse=GetUserAccountResponse.builder()
@@ -104,6 +113,14 @@ public class ClientController {
 		    	for(Client client:clients) {
 		    		
 		    		 Subscription sub=client.getSubscription();
+		    		
+		             PaymentMode paymentMode = sub.getPaymentMode();
+		             
+		             GetPaymentModeResponse paymentModeResponse=GetPaymentModeResponse.builder()
+		             		.id(paymentMode.getId())
+		             		.paymentTranches(paymentMode.getPaymentTranches())
+		             		.build();
+		             
 		 	        
 		 	        UserAccount user=client.getUserAccount();
 		 	        
@@ -116,7 +133,6 @@ public class ClientController {
 		 	        		.price(pack.getPrice())
 		 	        		.description(pack.getDescription())
 		 	        		.durationInMonths(pack.getDurationInMonths())
-		 	        		.paymentType(pack.getDescription())
 		 	        		.build();
 		 	        
 		 	        GetSubscriptionResponse subscriptionResponse=GetSubscriptionResponse.builder()
@@ -128,6 +144,7 @@ public class ClientController {
 		 	        		.status(sub.getStatus())
 		 	        		.subscribedContact(sub.getSubscribedContact())
 		 	        		.subscribedPackage(package_response)
+		 	        		.paymentMode(paymentModeResponse)
 		 	        		.build();
 		 	        
 		 	        GetUserAccountResponse getUserAccountResponse=GetUserAccountResponse.builder()
