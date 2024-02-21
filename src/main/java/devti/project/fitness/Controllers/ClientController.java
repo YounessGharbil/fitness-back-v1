@@ -72,6 +72,7 @@ public class ClientController {
 	 	        		.subscribedContact(sub.getSubscribedContact())
 	 	        		.subscribedPackage(package_response)
 	 	        		.paymentMode(paymentModeResponse)
+	 	        		.payments(sub.getPayments())
 	 	        		.build();
 	 	        
 	 	        GetUserAccountResponse getUserAccountResponse=GetUserAccountResponse.builder()
@@ -145,6 +146,7 @@ public class ClientController {
 		 	        		.subscribedContact(sub.getSubscribedContact())
 		 	        		.subscribedPackage(package_response)
 		 	        		.paymentMode(paymentModeResponse)
+		 	        		.payments(sub.getPayments())
 		 	        		.build();
 		 	        
 		 	        GetUserAccountResponse getUserAccountResponse=GetUserAccountResponse.builder()

@@ -17,5 +17,6 @@ public class GetPaymentModeResponse {
 	    private Long id;
 	    
 	    private List<PaymentTranche> paymentTranches;
+	    
 
 }

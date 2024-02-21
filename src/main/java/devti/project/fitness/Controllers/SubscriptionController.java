@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +32,7 @@ import devti.project.fitness.entities.Client;
 import devti.project.fitness.entities.Contact;
 import devti.project.fitness.entities.Observation;
 import devti.project.fitness.entities.Package;
+import devti.project.fitness.entities.Payment;
 import devti.project.fitness.entities.PaymentMode;
 import devti.project.fitness.entities.PaymentTranche;
 import devti.project.fitness.entities.Role;
@@ -42,6 +42,7 @@ import devti.project.fitness.entities.requests.pack.GetPackageResponse;
 import devti.project.fitness.entities.requests.subscription.CreatePaymentTrancheRequest;
 import devti.project.fitness.entities.requests.subscription.CreateSubscriptionRequest;
 import devti.project.fitness.entities.requests.subscription.GetPaymentModeResponse;
+import devti.project.fitness.entities.requests.subscription.GetPaymentResponse;
 import devti.project.fitness.entities.requests.subscription.GetSubscriptionResponse;
 import devti.project.fitness.entities.requests.subscription.UpdateSubscriptionRequest;
 import lombok.RequiredArgsConstructor;
@@ -110,7 +111,7 @@ public class SubscriptionController {
              
              tranches.add(tranche);
          }
-    	
+    	     	
     	PaymentMode paymentMode=PaymentMode.builder()
     			.paymentTranches(tranches)
     			.build();
@@ -134,6 +135,7 @@ public class SubscriptionController {
         		.subscribedPackage(pack)
         		.status("active")
         		.paymentMode(createdPaymentMode)
+        		.payments(new ArrayList<Payment>())
         		.build()
         				);
     	
@@ -186,6 +188,17 @@ public class SubscriptionController {
         		.paymentTranches(paymentMode.getPaymentTranches())
         		.build();
         
+        for(Payment p:sub.getPayments()) {
+        	System.out.println("****************************************");
+
+        	System.out.println(p.getAmount());
+        	System.out.println(p.getPaymentDate());
+        	
+        	System.out.println("****************************************");
+
+
+        }
+        
         GetSubscriptionResponse response=GetSubscriptionResponse.builder()
         		.id(sub.getId())
         		.discount(sub.getDiscount())
@@ -196,6 +209,7 @@ public class SubscriptionController {
         		.subscribedContact(sub.getSubscribedContact())
         		.subscribedPackage(package_response)
         		.paymentMode(paymentModeResponse)
+        		.payments(sub.getPayments())
         		.build();
         
         return new ResponseEntity<>(response,HttpStatus.OK);
@@ -229,6 +243,24 @@ public class SubscriptionController {
             		.paymentTranches(paymentMode.getPaymentTranches())
             		.build();
             
+            List<Payment> subscriptionPayments=sub.getPayments();
+            
+            List<GetPaymentResponse> subscriptionPaymentsResponse=new ArrayList<GetPaymentResponse>();
+            
+            for(Payment p:subscriptionPayments) {
+            	subscriptionPaymentsResponse.add(
+            			GetPaymentResponse.builder()
+            			.id(p.getId())
+            			.paymentDate(p.getPaymentDate())
+            			.paymentMethod(p.getPaymentMethod())
+            			.amount(p.getAmount())
+            			.paymentTranche(p.getPaymentTranche())
+            			.build()
+            			);
+       
+            }
+
+            
     		response.add(
     				GetSubscriptionResponse.builder()
     				.id(sub.getId())
@@ -240,6 +272,7 @@ public class SubscriptionController {
             		.subscribedContact(sub.getSubscribedContact())
             		.subscribedPackage(package_response)
             		.paymentMode(paymentModeResponse)
+            		.payments(sub.getPayments())
     				.build()
     				);   		
     	}

@@ -7,5 +7,8 @@ import devti.project.fitness.entities.PaymentMode;
 
 @Repository
 public interface PaymentModeRepository extends JpaRepository<PaymentMode, Long> {
+	
+    PaymentMode findByPaymentTranchesId(Long paymentTrancheId);
+
 
 }
