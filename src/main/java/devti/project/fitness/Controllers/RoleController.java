@@ -31,7 +31,6 @@ public class RoleController {
 	    public ResponseEntity<Role> createRole(@RequestBody CreateRoleRequest createRoleRequest) {
 
 	        Role role =Role.builder()
-//	        		.authorities(createRoleRequest.getAuthorities())
 	        		.rolename(createRoleRequest.getRolename())
 	        		.build();
 		 
@@ -41,7 +40,6 @@ public class RoleController {
 	 
 	 @PutMapping
 	    public ResponseEntity<Role> updateRole(@RequestBody Role role) {
-
 	        
 	        return new ResponseEntity<>(roleService.updateRole(role), HttpStatus.CREATED);
 	        
@@ -49,13 +47,14 @@ public class RoleController {
 	 
 	 @GetMapping("/{id}")
 	    public ResponseEntity<GetRoleResponse> getRole(@PathVariable Long id) {
+		 
 	        Role role=roleService.getRole(id);
 	        if(role==null){
 	            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 	        }
+	        
 	        GetRoleResponse response=GetRoleResponse.builder()
 	        		.id(role.getId())
-//	        		.authorities(role.getAuthorities())
 	        		.rolename(role.getRolename())
 	        		.build();
 	        return new ResponseEntity<>(response,HttpStatus.OK);

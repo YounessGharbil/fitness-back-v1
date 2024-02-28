@@ -10,8 +10,6 @@ import devti.project.fitness.entities.UserAccount;
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
 	
-//    Optional<UserAccount> findByContact(Contact contact);
     Optional<UserAccount>  findByEmail(String email);
-
 
 }

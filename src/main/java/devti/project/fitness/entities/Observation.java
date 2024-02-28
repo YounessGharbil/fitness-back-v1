@@ -19,7 +19,7 @@ public class Observation {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long Id;
+	private Long id;
 	@ManyToOne
 	private Client client;
     private String observationType;

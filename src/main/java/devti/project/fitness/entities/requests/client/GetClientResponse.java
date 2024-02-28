@@ -1,7 +1,10 @@
 package devti.project.fitness.entities.requests.client;
 
 
+import java.util.List;
+
 import devti.project.fitness.entities.Contact;
+import devti.project.fitness.entities.requests.observation.GetObservationResponse;
 import devti.project.fitness.entities.requests.subscription.GetSubscriptionResponse;
 import devti.project.fitness.entities.requests.user.GetUserAccountResponse;
 import lombok.AllArgsConstructor;
@@ -24,5 +27,7 @@ public class GetClientResponse {
 	private GetSubscriptionResponse subscription;
 	
 	private GetUserAccountResponse userAccount;
+	
+ 	private List<GetObservationResponse> observations; 
 
 }
