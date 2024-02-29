@@ -1,5 +1,6 @@
 package devti.project.fitness.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import devti.project.fitness.entities.requests.payment.CashPaymentResponse;
 import devti.project.fitness.entities.requests.payment.CheckPaymentRequest;
 import devti.project.fitness.entities.requests.payment.CheckPaymentResponse;
 import devti.project.fitness.entities.requests.payment.PaymentResponse;
+import devti.project.fitness.entities.requests.subscription.GetPaymentResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -98,9 +100,25 @@ public class PaymentController {
     }
 	
 	 @GetMapping
-	 public ResponseEntity<List<Payment>> getPayments() {
+	 public ResponseEntity<List<GetPaymentResponse>> getPayments() {
+		 List<Payment> payments=paymentService.getPayments();
 
-	        return new ResponseEntity<>(paymentService.getPayments(),HttpStatus.OK);
+		 List<GetPaymentResponse> paymentsResponse=new ArrayList<GetPaymentResponse>();
+		 
+		 for(Payment p:payments) {
+			 paymentsResponse.add(
+					 GetPaymentResponse.builder()
+					 .paymentTranche(p.getPaymentTranche())
+					 .paymentMethod(p.getPaymentMethod())
+					 .paymentDate(p.getPaymentDate())
+					 .amount(p.getAmount())
+					 .subscription(p.getSubscription())
+					 .build()
+					 );
+		 }
+
+	        return new ResponseEntity<>(paymentsResponse,HttpStatus.OK);
+	             
 	    }
 	 
 	 @GetMapping("/{id}")

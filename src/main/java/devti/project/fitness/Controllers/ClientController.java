@@ -164,6 +164,7 @@ public class ClientController {
 		    				.gymid(client.getGymid())
 		    				.subscription(subscriptionResponse)
 		    				.userAccount(getUserAccountResponse)
+		    				.observations(client.getObservations())
 		    				.build()
 		    				);
 		    	}
