@@ -13,12 +13,12 @@ import devti.project.fitness.entities.requests.authentication.AuthenticationResp
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/Auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     
-    @PostMapping("/authenticate")
+    @PostMapping
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) throws Exception{
     	
     	AuthenticationResponse response=null;

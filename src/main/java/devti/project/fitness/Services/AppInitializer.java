@@ -4,14 +4,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import devti.project.fitness.Repositories.RoleRepository;
+import devti.project.fitness.Repositories.UserAccountRepository;
 import devti.project.fitness.entities.Role;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class RoleInitializer implements CommandLineRunner {
+public class AppInitializer implements CommandLineRunner {
 	
     private final RoleRepository roleRepository;
+    private final UserAccountRepository userRepository;
+
     
 
 	@Override
