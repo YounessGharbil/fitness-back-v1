@@ -1,6 +1,7 @@
 package devti.project.fitness.Controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import devti.project.fitness.Services.RoleService;
+import devti.project.fitness.entities.Authority;
 import devti.project.fitness.entities.Role;
 import devti.project.fitness.entities.requests.role.CreateRoleRequest;
 import devti.project.fitness.entities.requests.role.GetRoleResponse;
@@ -30,11 +32,9 @@ public class RoleController {
 	 @PostMapping
 	    public ResponseEntity<Role> createRole(@RequestBody CreateRoleRequest createRoleRequest) {
 
-	        Role role =Role.builder()
-	        		.rolename(createRoleRequest.getRolename())
-	        		.build();
+	        Role role =roleService.createRole(createRoleRequest);
 		 
-	        return new ResponseEntity<>(roleService.createRole(role), HttpStatus.CREATED);
+	        return new ResponseEntity<>(role, HttpStatus.CREATED);
 	        
 	    }
 	 
@@ -53,9 +53,14 @@ public class RoleController {
 	            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 	        }
 	        
+	        List<String> authorityNames = role.getAuthorities().stream()
+	                .map(Authority::getName)
+	                .collect(Collectors.toList());
+	        
 	        GetRoleResponse response=GetRoleResponse.builder()
 	        		.id(role.getId())
 	        		.rolename(role.getRolename())
+	        		.authorities(authorityNames)
 	        		.build();
 	        return new ResponseEntity<>(response,HttpStatus.OK);
 	    }

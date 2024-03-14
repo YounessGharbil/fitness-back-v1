@@ -31,4 +31,6 @@ public class PaymentMode {
     @OneToMany(mappedBy = "paymentMode", cascade = CascadeType.ALL)
     private List<PaymentTranche> paymentTranches;
     
+    private boolean subscriptionPaid;
+    
 }

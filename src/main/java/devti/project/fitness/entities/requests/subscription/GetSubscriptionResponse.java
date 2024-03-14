@@ -4,6 +4,7 @@ import java.util.List;
 
 import devti.project.fitness.entities.Contact;
 import devti.project.fitness.entities.Payment;
+import devti.project.fitness.entities.SubscriptionEvent;
 import devti.project.fitness.entities.requests.pack.GetPackageResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,8 @@ public class GetSubscriptionResponse {
 	 private GetPaymentModeResponse paymentMode;
 	 
 	 private List<Payment> payments; 
+	 
+	 private List<SubscriptionEvent> subscriptionEvents;
 
 	 
 }

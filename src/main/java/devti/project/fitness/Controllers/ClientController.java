@@ -34,6 +34,7 @@ public class ClientController {
 		 GetClientResponse response=null;
 		 
 		 Client client=clientService.getClient(id);
+		 
 	        if(client==null){
 	        	throw new RuntimeException("Client not found");
 	        }
@@ -43,10 +44,11 @@ public class ClientController {
 	        	Subscription sub=client.getSubscription();
 	        	
 	        	 PaymentMode paymentMode = sub.getPaymentMode();
-	             
+	           
 	             GetPaymentModeResponse paymentModeResponse=GetPaymentModeResponse.builder()
 	             		.id(paymentMode.getId())
 	             		.paymentTranches(paymentMode.getPaymentTranches())
+	             		.isSubscriptionPaid(paymentMode.isSubscriptionPaid())
 	             		.build();
 	 	        
 	 	        UserAccount user=client.getUserAccount();
@@ -73,13 +75,12 @@ public class ClientController {
 	 	        		.subscribedPackage(package_response)
 	 	        		.paymentMode(paymentModeResponse)
 	 	        		.payments(sub.getPayments())
+	 	        		.subscriptionEvents(sub.getSubscriptionEvents())
 	 	        		.build();
 	 	        
 	 	        GetUserAccountResponse getUserAccountResponse=GetUserAccountResponse.builder()
-	 	        		.Id(user.getId())
 	 	        		.contact(user.getContact())
 	 	        		.email(user.getUsername())
-	 	        		.password(user.getPassword())
 	 	        		.role(user.getRole())
 	 	        		.build();
 	 	        
@@ -147,13 +148,12 @@ public class ClientController {
 		 	        		.subscribedPackage(package_response)
 		 	        		.paymentMode(paymentModeResponse)
 		 	        		.payments(sub.getPayments())
+		 	        		.subscriptionEvents(sub.getSubscriptionEvents())
 		 	        		.build();
 		 	        
 		 	        GetUserAccountResponse getUserAccountResponse=GetUserAccountResponse.builder()
-		 	        		.Id(user.getId())
 		 	        		.contact(user.getContact())
 		 	        		.email(user.getUsername())
-		 	        		.password(user.getPassword())
 		 	        		.role(user.getRole())
 		 	        		.build();
 		    		

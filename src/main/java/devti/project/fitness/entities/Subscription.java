@@ -59,5 +59,7 @@ public class Subscription {
 	 @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL)
 	 private List<Payment> payments; 
 	 
-
+	 @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL)
+	 private List<SubscriptionEvent> subscriptionEvents;
+	 
 }

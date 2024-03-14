@@ -1,5 +1,7 @@
 package devti.project.fitness.entities.requests.role;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,8 @@ public class GetRoleResponse {
 	
 	private Long id;
 
-	 private String rolename;
+	private String rolename;
+	
+	private List<String> authorities;
 	 
 }

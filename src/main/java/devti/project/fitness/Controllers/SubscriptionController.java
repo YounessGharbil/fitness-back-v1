@@ -123,14 +123,17 @@ public class SubscriptionController {
     		paymentTrancheService.updatePaymentTranche(paymentTranche);
     		
     	}
-        
+    	
+    	double priceAfterDiscount=createSubscriptionRequest.getDiscount()!=0?
+    			price-price*createSubscriptionRequest.getDiscount()/100:price;
+    	
     	Subscription sub=subscriptionService
         		.createSubscription(	
         		Subscription.builder()
         		.discount(createSubscriptionRequest.getDiscount())
         		.startDate(startDateString)
         		.endDate(endDateString)
-        		.priceAfterDiscount(price-price*createSubscriptionRequest.getDiscount()/100)
+        		.priceAfterDiscount(priceAfterDiscount)
         		.subscribedContact(contact)
         		.subscribedPackage(pack)
         		.status("active")
@@ -188,17 +191,6 @@ public class SubscriptionController {
         		.paymentTranches(paymentMode.getPaymentTranches())
         		.build();
         
-        for(Payment p:sub.getPayments()) {
-        	System.out.println("****************************************");
-
-        	System.out.println(p.getAmount());
-        	System.out.println(p.getPaymentDate());
-        	
-        	System.out.println("****************************************");
-
-
-        }
-        
         GetSubscriptionResponse response=GetSubscriptionResponse.builder()
         		.id(sub.getId())
         		.discount(sub.getDiscount())
@@ -210,6 +202,7 @@ public class SubscriptionController {
         		.subscribedPackage(package_response)
         		.paymentMode(paymentModeResponse)
         		.payments(sub.getPayments())
+        		.subscriptionEvents(sub.getSubscriptionEvents())
         		.build();
         
         return new ResponseEntity<>(response,HttpStatus.OK);
@@ -236,11 +229,14 @@ public class SubscriptionController {
             		.build();
             
             PaymentMode paymentMode = sub.getPaymentMode();
+
 //            List<PaymentTranche> paymentTranches = paymentMode != null ? paymentMode.getPaymentTranches() : Collections.emptyList();
+            
             
             GetPaymentModeResponse paymentModeResponse=GetPaymentModeResponse.builder()
             		.id(paymentMode.getId())
             		.paymentTranches(paymentMode.getPaymentTranches())
+            		.isSubscriptionPaid(paymentMode.isSubscriptionPaid())
             		.build();
             
             List<Payment> subscriptionPayments=sub.getPayments();
@@ -273,6 +269,7 @@ public class SubscriptionController {
             		.subscribedPackage(package_response)
             		.paymentMode(paymentModeResponse)
             		.payments(sub.getPayments())
+            		.subscriptionEvents(sub.getSubscriptionEvents())
     				.build()
     				);   		
     	}
@@ -298,7 +295,9 @@ public class SubscriptionController {
              
              String formattedNewEndDate = newEndDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-             sub.setStartDate(sub.getEndDate());
+//             sub.setStartDate(sub.getEndDate());
+             sub.setStartDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
              sub.setEndDate(formattedNewEndDate);
         }
         
@@ -315,6 +314,7 @@ public class SubscriptionController {
         if (updateSubscriptionRequest.getPaymentMode() != null) {
         
         	PaymentMode paymentMode =sub.getPaymentMode();
+        	paymentMode.setSubscriptionPaid(false);
         	
         	List<PaymentTranche> tranches=new ArrayList<PaymentTranche>();
 

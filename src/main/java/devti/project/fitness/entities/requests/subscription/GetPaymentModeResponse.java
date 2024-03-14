@@ -18,5 +18,7 @@ public class GetPaymentModeResponse {
 	    
 	    private List<PaymentTranche> paymentTranches;
 	    
+	    private boolean isSubscriptionPaid;
+	    
 
 }

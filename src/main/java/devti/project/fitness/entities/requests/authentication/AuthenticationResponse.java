@@ -1,5 +1,6 @@
 package devti.project.fitness.entities.requests.authentication;
 
+import devti.project.fitness.entities.requests.user.GetUserAccountResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
 	 	private String token;
-	    private String userEmail;
-	    private String userRole;
+	    private GetUserAccountResponse userAccount;
 }

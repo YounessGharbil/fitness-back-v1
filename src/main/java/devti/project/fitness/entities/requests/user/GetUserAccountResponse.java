@@ -13,14 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetUserAccountResponse {
 
-	   private Long Id;
-
 	   private Contact contact;
 	   	   
 	   private String email;
-	   
-	   private String password;
-	   
+	   	   
 	   private Role role;
 
 }

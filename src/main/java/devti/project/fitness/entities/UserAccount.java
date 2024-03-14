@@ -1,5 +1,6 @@
 package devti.project.fitness.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -51,8 +52,13 @@ public class UserAccount implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		return  List.of(new SimpleGrantedAuthority(role.getRolename()));
+//
+//		return  List.of(new SimpleGrantedAuthority(role.getRolename()));
+		 List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		    for (Authority authority : role.getAuthorities()) {
+		        authorities.add(new SimpleGrantedAuthority(authority.getName()));
+		    }
+		    return authorities;
 	}
 
 	@Override

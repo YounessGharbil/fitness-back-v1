@@ -1,5 +1,6 @@
 package devti.project.fitness.entities.requests.role;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +13,7 @@ import lombok.NoArgsConstructor;
 public class CreateRoleRequest {
 	
 	private String rolename;
+	
+	private List<String> authorities;
 	 
 }

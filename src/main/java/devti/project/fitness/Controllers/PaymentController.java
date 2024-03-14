@@ -2,6 +2,7 @@ package devti.project.fitness.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import devti.project.fitness.Services.PaymentModeService;
 import devti.project.fitness.Services.PaymentService;
 import devti.project.fitness.Services.SubscriptionService;
 import devti.project.fitness.entities.CardPayment;
 import devti.project.fitness.entities.CashPayment;
 import devti.project.fitness.entities.CheckPayment;
 import devti.project.fitness.entities.Payment;
+import devti.project.fitness.entities.PaymentMode;
+import devti.project.fitness.entities.PaymentTranche;
 import devti.project.fitness.entities.Subscription;
 import devti.project.fitness.entities.requests.payment.CardPaymentRequest;
 import devti.project.fitness.entities.requests.payment.CardPaymentResponse;
@@ -36,11 +40,13 @@ public class PaymentController {
 	
 	private final PaymentService paymentService;
 	private final SubscriptionService subscriptionService;
+	private final PaymentModeService paymentModeService;
 	
 	@PostMapping("/check-payment")
     public ResponseEntity<CheckPayment> createCheckPayment(@RequestBody CheckPaymentRequest checkPaymentRequest) {
 		
 		Subscription subscription=subscriptionService.getSubscription(checkPaymentRequest.getSubscriptionid());
+		PaymentMode paymentMode=subscription.getPaymentMode();
 	 	
 		CheckPayment checkPayment=new CheckPayment();
 		
@@ -52,6 +58,8 @@ public class PaymentController {
 		checkPayment.setSubscription(subscription)	;
 		CheckPayment createdCheckPayment=paymentService.createCkeckPayment(checkPayment);
 		
+		updateSubscriptionPaidStatus(paymentMode);
+		
         return new ResponseEntity<>(createdCheckPayment, HttpStatus.CREATED);
         
     }
@@ -61,6 +69,8 @@ public class PaymentController {
 		
 		
 	 	Subscription subscription=subscriptionService.getSubscription(cashPaymentRequest.getSubscriptionid());
+		PaymentMode paymentMode=subscription.getPaymentMode();
+
 
 		CashPayment cashPayment=new CashPayment();
 		
@@ -72,6 +82,8 @@ public class PaymentController {
 		cashPayment.setSubscription(subscription);
 		
 		CashPayment createdCashPayment=paymentService.createCashPayment(cashPayment);
+		
+		updateSubscriptionPaidStatus(paymentMode);
 
         return new ResponseEntity<>(createdCashPayment, HttpStatus.CREATED);
         
@@ -81,19 +93,22 @@ public class PaymentController {
     public ResponseEntity<CardPayment> createCardPayment(@RequestBody CardPaymentRequest cardPaymentRequest) {
 		
 	 	Subscription subscription=subscriptionService.getSubscription(cardPaymentRequest.getSubscriptionid());
+		PaymentMode paymentMode=subscription.getPaymentMode();
+
 		
 		CardPayment cardPayment=new CardPayment();
 		cardPayment.setAmount(cardPaymentRequest.getAmount());
 		cardPayment.setPaymentDate(cardPaymentRequest.getPaymentDate());
 		cardPayment.setPaymentMethod(cardPaymentRequest.getPaymentMethod());
 		cardPayment.setPaymentTranche(cardPaymentRequest.getPaymentTranche());
-		cardPayment.setTransactionNumber(0);
+		cardPayment.setTransactionNumber(UUID.randomUUID());
 		cardPayment.setCardCVV(cardPaymentRequest.getCardCVV());
 		cardPayment.setCardExpirationDate(cardPaymentRequest.getCardExpirationDate());
 		cardPayment.setCardNumber(cardPaymentRequest.getCardNumber());
 		cardPayment.setSubscription(subscription);
 
 		CardPayment CreatedCardPayment=paymentService.createCardPayment(cardPayment);
+		updateSubscriptionPaidStatus(paymentMode);
 		
         return new ResponseEntity<>(CreatedCardPayment, HttpStatus.CREATED);
         
@@ -153,6 +168,13 @@ public class PaymentController {
 	        
 	        return new ResponseEntity<>(response,HttpStatus.OK);
 	    }
+	 
+	 public void updateSubscriptionPaidStatus(PaymentMode paymentMode) {
+		    boolean allTranchesPaid = paymentMode.getPaymentTranches().stream()
+		            .allMatch(PaymentTranche::isTranchePaid);
+		    paymentMode.setSubscriptionPaid(allTranchesPaid);
+		    paymentModeService.updatePaymentMode(paymentMode);
+		}
 	 
 
 }

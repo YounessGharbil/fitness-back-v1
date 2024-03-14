@@ -92,10 +92,8 @@ public class UserAccountController {
 	        }
 	        
 	        GetUserAccountResponse response=GetUserAccountResponse.builder()
-	        		.Id(user.getId())
 	        		.contact(user.getContact())
 	        		.email(user.getUsername())
-	        		.password(user.getPassword())
 	        		.role(user.getRole())
 	        		.build();
 	        
@@ -112,10 +110,8 @@ public class UserAccountController {
 	    	for(UserAccount user:userAccounts) {
 	    		response.add(
 	    				GetUserAccountResponse.builder()
-	    				.Id(user.getId())
 	    				.contact(user.getContact())
 	    				.email(user.getEmail())
-	    				.password(user.getPassword())
 	    				.role(user.getRole())
 	    				.build()
 	    				);

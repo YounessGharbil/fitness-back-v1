@@ -1,5 +1,7 @@
 package devti.project.fitness.entities;
 
+import java.util.UUID;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,7 @@ public class CardPayment extends Payment {
 	private String cardNumber; 
     private String cardExpirationDate; 
     private String cardCVV; 
-    private int transactionNumber;
+    private UUID transactionNumber;
     
 }
 
