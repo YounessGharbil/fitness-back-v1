@@ -15,4 +15,6 @@ public class GetObservationResponse {
     
     private String content;
     
+    private String createdBy;
+    
 }

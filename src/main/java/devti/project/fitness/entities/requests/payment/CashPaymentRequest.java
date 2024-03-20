@@ -21,6 +21,8 @@ public class CashPaymentRequest {
 	 private String paymentDate;
 	 
 	 private Long subscriptionid;
+	 private String paymentHandler;
+
 
 	 
 

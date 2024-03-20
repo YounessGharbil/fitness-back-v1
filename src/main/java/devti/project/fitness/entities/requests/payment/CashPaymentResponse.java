@@ -25,5 +25,8 @@ public class CashPaymentResponse implements PaymentResponse {
 	 private String paymentDate;
 	 
 	 private Long subscriptionid;
+	 
+	 private String paymentHandler;
+
 
 }

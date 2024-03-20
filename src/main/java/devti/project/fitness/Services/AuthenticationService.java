@@ -20,10 +20,13 @@ public class AuthenticationService {
     private final JWTService jwtService;
     
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-    	
+
         var user=userAccountRepository.findByEmail(request.getEmail()).orElseThrow();
-        
+         
         var jwtToken=jwtService.generateToken(user);
+        
+        System.out.println(jwtToken);
+
         
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));

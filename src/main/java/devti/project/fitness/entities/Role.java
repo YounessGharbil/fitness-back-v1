@@ -3,6 +3,7 @@ package devti.project.fitness.entities;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class Role {
 		 
 		 private String rolename;
 		 
-		 @ManyToMany
+		 @ManyToMany(fetch = FetchType.EAGER)
 		 @JoinTable(name = "role_authority",
 				 	joinColumns = @JoinColumn(name = "role_id"),
 				 	inverseJoinColumns =@JoinColumn(name = "authority_id"))

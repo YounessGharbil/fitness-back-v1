@@ -23,6 +23,8 @@ public class GetPaymentResponse {
 	    private double amount;
 
 	    private String paymentDate;
+	    
+	    private String paymentHandler;
 	   
 	    private Subscription subscription;
 	    

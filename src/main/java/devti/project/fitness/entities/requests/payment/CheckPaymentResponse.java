@@ -28,5 +28,8 @@ public class CheckPaymentResponse implements PaymentResponse {
 	 private String checkNumber;
 	 
 	 private Long subscriptionid;
+	 
+	 private String paymentHandler;
+
 
 }

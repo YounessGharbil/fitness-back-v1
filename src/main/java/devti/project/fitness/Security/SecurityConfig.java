@@ -28,7 +28,10 @@ public class SecurityConfig {
                 http
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(
-                		authorize->authorize.anyRequest().permitAll()
+                		authorize->authorize
+                		.requestMatchers("/Subscription").hasAnyAuthority("SUBSCRIPTIONS_MANAGEMENT")
+                		.requestMatchers("/Payment").hasAuthority("PAYMENTS_MANAGEMENT")
+                		.anyRequest().permitAll()
                 		)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -40,3 +43,17 @@ public class SecurityConfig {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

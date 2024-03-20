@@ -22,10 +22,15 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) throws Exception{
     	
     	AuthenticationResponse response=null;
+    	
     	try {
+    		
     		response=authenticationService.authenticate(request);
+    		
 		} catch (Exception e) {
+			
 			throw new Exception("Authentication failed");
+			
 		}
     	
     	

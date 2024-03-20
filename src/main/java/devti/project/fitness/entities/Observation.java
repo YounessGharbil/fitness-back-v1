@@ -24,5 +24,6 @@ public class Observation {
 	private Client client;
     private String observationType;
     private String content;
+    private String createdBy;
 
 }

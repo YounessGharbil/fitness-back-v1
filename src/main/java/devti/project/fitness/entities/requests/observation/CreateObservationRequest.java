@@ -14,5 +14,7 @@ public class CreateObservationRequest {
 	private Long clientId;
     private String observationType;
     private String content;
+    private String createdBy;
+
 
 }

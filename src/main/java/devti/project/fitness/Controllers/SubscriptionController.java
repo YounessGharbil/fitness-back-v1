@@ -46,6 +46,8 @@ import devti.project.fitness.entities.requests.subscription.GetPaymentResponse;
 import devti.project.fitness.entities.requests.subscription.GetSubscriptionResponse;
 import devti.project.fitness.entities.requests.subscription.UpdateSubscriptionRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
 @RequestMapping("/Subscription")
@@ -210,6 +212,17 @@ public class SubscriptionController {
     
     @GetMapping
     public ResponseEntity<List<GetSubscriptionResponse>> getSubscriptions() {
+    	
+//    	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    	 
+//    	 if (authentication != null && authentication.isAuthenticated()) {
+//             String username = authentication.getName();
+//             System.out.println("++++++++++++++++++++++++++++++++");
+//             System.out.println(username);
+//             System.out.println(authentication.getAuthorities().toString());
+//             System.out.println("--------------------------------");
+//
+//         } 
     	
     	List<Subscription> subscriptions=subscriptionService.getSubscriptions();
     

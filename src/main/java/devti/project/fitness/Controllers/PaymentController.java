@@ -46,6 +46,7 @@ public class PaymentController {
     public ResponseEntity<CheckPayment> createCheckPayment(@RequestBody CheckPaymentRequest checkPaymentRequest) {
 		
 		Subscription subscription=subscriptionService.getSubscription(checkPaymentRequest.getSubscriptionid());
+		
 		PaymentMode paymentMode=subscription.getPaymentMode();
 	 	
 		CheckPayment checkPayment=new CheckPayment();
@@ -55,6 +56,7 @@ public class PaymentController {
 		checkPayment.setPaymentDate(checkPaymentRequest.getPaymentDate());
 		checkPayment.setPaymentMethod(checkPaymentRequest.getPaymentMethod());
 		checkPayment.setPaymentTranche(checkPaymentRequest.getPaymentTranche());
+		checkPayment.setPaymentHandler(checkPaymentRequest.getPaymentHandler());
 		checkPayment.setSubscription(subscription)	;
 		CheckPayment createdCheckPayment=paymentService.createCkeckPayment(checkPayment);
 		
@@ -78,7 +80,7 @@ public class PaymentController {
 		cashPayment.setPaymentMethod(cashPaymentRequest.getPaymentMethod());
 		cashPayment.setPaymentDate(cashPaymentRequest.getPaymentDate());
 		cashPayment.setAmount(cashPaymentRequest.getAmount());
-		cashPayment.setSubscription(subscription);
+		cashPayment.setPaymentHandler(cashPaymentRequest.getPaymentHandler());
 		cashPayment.setSubscription(subscription);
 		
 		CashPayment createdCashPayment=paymentService.createCashPayment(cashPayment);
@@ -93,6 +95,7 @@ public class PaymentController {
     public ResponseEntity<CardPayment> createCardPayment(@RequestBody CardPaymentRequest cardPaymentRequest) {
 		
 	 	Subscription subscription=subscriptionService.getSubscription(cardPaymentRequest.getSubscriptionid());
+	 	
 		PaymentMode paymentMode=subscription.getPaymentMode();
 
 		
@@ -105,9 +108,11 @@ public class PaymentController {
 		cardPayment.setCardCVV(cardPaymentRequest.getCardCVV());
 		cardPayment.setCardExpirationDate(cardPaymentRequest.getCardExpirationDate());
 		cardPayment.setCardNumber(cardPaymentRequest.getCardNumber());
+		cardPayment.setPaymentHandler(cardPaymentRequest.getPaymentHandler());
 		cardPayment.setSubscription(subscription);
 
 		CardPayment CreatedCardPayment=paymentService.createCardPayment(cardPayment);
+		
 		updateSubscriptionPaidStatus(paymentMode);
 		
         return new ResponseEntity<>(CreatedCardPayment, HttpStatus.CREATED);
@@ -127,6 +132,7 @@ public class PaymentController {
 					 .paymentMethod(p.getPaymentMethod())
 					 .paymentDate(p.getPaymentDate())
 					 .amount(p.getAmount())
+					 .paymentHandler(p.getPaymentHandler())
 					 .subscription(p.getSubscription())
 					 .build()
 					 );

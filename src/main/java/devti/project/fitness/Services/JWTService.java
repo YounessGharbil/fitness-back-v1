@@ -35,11 +35,13 @@ public class JWTService {
     }
     
     public <T> T extractClaim(String token, Function<Claims,T> claimResolver) {
+
         final Claims claims=extractAllClaims( token);
         return claimResolver.apply(claims);
     }
     
     public String extractUserEmail(String token) {
+
         return extractClaim(token,Claims::getSubject);
     }
     
@@ -52,8 +54,6 @@ public class JWTService {
             Map<String,Object> extraClaims,
             UserDetails userdetails
     ) {
-
-
 
         return Jwts.builder()
                 .setClaims(extraClaims)
@@ -73,13 +73,13 @@ public class JWTService {
     }
     
     private boolean isTokenExpired(String token) {
-    	
+
         return extractExpiration(token).before(new Date());
         
     }
     
     private Date extractExpiration(String token) {
-    	
+
         return extractClaim(token, Claims::getExpiration);
         
     }

@@ -29,5 +29,7 @@ public class CardPaymentResponse implements PaymentResponse {
 	    private String cardCVV; 
 	    private int transactionNumber;
 	    private Long subscriptionid;
+	    private String paymentHandler;
+
 
 }

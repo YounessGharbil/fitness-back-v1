@@ -37,6 +37,7 @@ public class ObservationController {
 				 .client(client)
 				 .content(createObservationRequest.getContent())
 				 .observationType(createObservationRequest.getObservationType())
+				 .createdBy(createObservationRequest.getCreatedBy())
 				 .build();
 		 
 		 Observation createdObservation=observationService.createObservation(observation);

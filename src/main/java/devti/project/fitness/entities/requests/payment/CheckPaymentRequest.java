@@ -23,6 +23,9 @@ public class CheckPaymentRequest {
 	 private String checkNumber;
 	 
 	 private Long subscriptionid;
+	 
+	 private String paymentHandler;
+
 
 
 }

@@ -37,6 +37,8 @@ public abstract class Payment {
 
     private String paymentDate;
     
+    private String paymentHandler;
+    
     @ManyToOne
     @JoinColumn(name = "subscription_id")
     @JsonIgnore

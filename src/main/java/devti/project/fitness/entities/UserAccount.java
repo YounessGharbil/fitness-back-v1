@@ -50,16 +50,17 @@ public class UserAccount implements UserDetails {
 	   @JoinColumn(name = "role_id")
 	   private Role role;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-//
-//		return  List.of(new SimpleGrantedAuthority(role.getRolename()));
-		 List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		    for (Authority authority : role.getAuthorities()) {
-		        authorities.add(new SimpleGrantedAuthority(authority.getName()));
-		    }
-		    return authorities;
-	}
+	   @Override
+	   public Collection<? extends GrantedAuthority> getAuthorities() {
+	       List<GrantedAuthority> authorities = new ArrayList<>();
+
+	       for (Authority authority : role.getAuthorities()) {
+	    	   
+	           authorities.add(new SimpleGrantedAuthority(authority.getName()));
+	       }
+
+	       return authorities;
+	   }
 
 	@Override
 	public String getPassword() {
