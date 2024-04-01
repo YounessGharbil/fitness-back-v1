@@ -1,12 +1,18 @@
 package devti.project.fitness.Services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import devti.project.fitness.Repositories.AuthorityRepository;
 import devti.project.fitness.Repositories.ContactRepository;
 import devti.project.fitness.Repositories.RoleRepository;
 import devti.project.fitness.Repositories.UserAccountRepository;
+import devti.project.fitness.entities.Authority;
 import devti.project.fitness.entities.Contact;
 import devti.project.fitness.entities.Role;
 import devti.project.fitness.entities.UserAccount;
@@ -20,6 +26,8 @@ public class AppInitializer implements CommandLineRunner {
     private final UserAccountRepository userRepository;
     private final ContactRepository contactRepository;
     private final PasswordEncoder passwordEncoder;
+	 private final AuthorityRepository authorityRepository;
+
 
 
     
@@ -44,9 +52,43 @@ public class AppInitializer implements CommandLineRunner {
             Role role = new Role();
             
             role.setRolename(roleName);
+            
+            if(roleName.equals("ROLE_ADMIN")) {
+            	
+            	 ArrayList<String> authoritiesList = new ArrayList<String>(
+            			 Arrays.asList("CONTACTS_MANAGEMENT","CLIENTS_MANAGEMENT","SUBSCRIPTIONS_MANAGEMENT",
+            					 	   "PAYMENTS_MANAGEMENT","STAFFS_MANAGEMENT","ROLES_MANAGEMENT","USERS_MANAGEMENT"
+            					 	  ,"PACKAGES_MANAGEMENT","OBSERVATIONS_MANAGEMENT")
+            			 );
+            	 
+             	List<Authority> authorities =new ArrayList<Authority>();
+            	 
+            	for(String authorityName:authoritiesList) {
+            		 
+            		 Authority authority=createAuthority(authorityName);
+            		 
+                 	 authorities.add(authority);
+            		 
+            	 }
+            	
+                role.setAuthorities(authorities);
+
+            }
+            
             roleRepository.save(role);
+            
         }
+        
     }
+	private Authority createAuthority(String authorityName) {
+		
+		Authority newAuthority = new Authority();
+		
+        newAuthority.setName(authorityName);
+
+		return authorityRepository.save(newAuthority);
+	}
+
 	private void createAdminAccount() {
 		Contact adminContact=Contact.builder()
 				.nom("admin")

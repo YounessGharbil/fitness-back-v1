@@ -2,6 +2,7 @@ package devti.project.fitness.entities.requests.staff;
 
 
 import devti.project.fitness.entities.Contact;
+import devti.project.fitness.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +20,7 @@ public class GetStaffResponse {
 	private Contact contact;
 	
 	private String gymId;
+	
+	private Role role;
 
 }

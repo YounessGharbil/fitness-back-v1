@@ -31,6 +31,15 @@ public class SecurityConfig {
                 		authorize->authorize
                 		.requestMatchers("/Subscription").hasAnyAuthority("SUBSCRIPTIONS_MANAGEMENT")
                 		.requestMatchers("/Payment").hasAuthority("PAYMENTS_MANAGEMENT")
+                		.requestMatchers("/Observation").hasAuthority("OBSERVATIONS_MANAGEMENT")
+                		.requestMatchers("/Client").hasAuthority("CLIENTS_MANAGEMENT")
+                		.requestMatchers("/User").hasAuthority("USERS_MANAGEMENT")
+                		.requestMatchers("/Package").hasAuthority("PACKAGES_MANAGEMENT")
+                		.requestMatchers("/Contact").hasAuthority("CONTACTS_MANAGEMENT")
+                		.requestMatchers("/Role").hasAuthority("ROLES_MANAGEMENT")
+                		.requestMatchers("/Staff").hasAuthority("STAFFS_MANAGEMENT")
+
+
                 		.anyRequest().permitAll()
                 		)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

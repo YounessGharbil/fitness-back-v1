@@ -49,11 +49,6 @@ public class StaffController {
     	Contact contact=createStaffRequest.getContact();
     	
     	Role role=roleService.getRoleByRole_name(createStaffRequest.getRolename());
-    	System.out.println(createStaffRequest.getRolename());
-    	System.out.println("--------------------------------------");
-    	System.out.println(role);
-    	System.out.println("--------------------------------------");
-
     	
     	UserAccount account=userAccountService.createUserAccount(UserAccount.builder()
     			.password(passwordEncoder.encode("123456"))
@@ -86,6 +81,7 @@ public class StaffController {
         		.id(staff.getId())
         		.contact(staff.getContact())	
         		.gymId(staff.getGymId())
+        		.role(staff.getUserAccount().getRole())
         		.build();
         
         return new ResponseEntity<>(response,HttpStatus.OK);
@@ -105,6 +101,7 @@ public class StaffController {
     				.id(staff.getId())
             		.contact(staff.getContact())	
             		.gymId(staff.getGymId())
+            		.role(staff.getUserAccount().getRole())
     				.build()
     				);
     		
@@ -124,14 +121,15 @@ public class StaffController {
         return new ResponseEntity<>("deleted successfully",HttpStatus.NO_CONTENT);
     }
     
-    @PutMapping
-    public ResponseEntity<Staff> updateStaff(@RequestBody UpdateStaffRequest updateStaffRequest){
+    @PutMapping("/{id}")
+    public ResponseEntity<Staff> updateStaff( @PathVariable Long id,@RequestBody UpdateStaffRequest updateStaffRequest){
     	
-    	Staff staff=staffService.getStaff(updateStaffRequest.getId());
-    	
+//    	Staff staff=staffService.getStaff(updateStaffRequest.getId());
+    	Staff staff=staffService.getStaff(id);
+
     	UserAccount userAccount=staff.getUserAccount();
     	
-    	Role role=roleService.getRoleByRole_name(updateStaffRequest.getRole_name());
+    	Role role=roleService.getRoleByRole_name(updateStaffRequest.getRolename());
 
     	
     	userAccount.setRole(role);

@@ -1,5 +1,6 @@
 package devti.project.fitness.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import devti.project.fitness.entities.Authority;
 import devti.project.fitness.entities.Role;
 import devti.project.fitness.entities.requests.role.CreateRoleRequest;
 import devti.project.fitness.entities.requests.role.GetRoleResponse;
+import devti.project.fitness.entities.requests.role.UpdateRoleRequest;
 import lombok.RequiredArgsConstructor;
 
 
@@ -38,10 +40,10 @@ public class RoleController {
 	        
 	    }
 	 
-	 @PutMapping
-	    public ResponseEntity<Role> updateRole(@RequestBody Role role) {
-	        
-	        return new ResponseEntity<>(roleService.updateRole(role), HttpStatus.CREATED);
+	 @PutMapping("/{id}")
+	 public ResponseEntity<Role> updateRole(@PathVariable Long id,@RequestBody UpdateRoleRequest roleRequest) {
+		 
+	        return new ResponseEntity<>(roleService.updateRole(roleRequest), HttpStatus.OK);
 	        
 	    }
 	 
@@ -66,9 +68,24 @@ public class RoleController {
 	    }
 	 
 	 @GetMapping
-	    public ResponseEntity<List<Role>> getRoles() {
-
-	        return new ResponseEntity<>(roleService.getRoles(),HttpStatus.OK);
+	    public ResponseEntity<List<GetRoleResponse>> getRoles() {
+		 
+		 	List<Role> roles=roleService.getRoles();
+		 	List<GetRoleResponse> response=new ArrayList<GetRoleResponse>();	
+		 	
+		 	for(Role role:roles) {
+		 		response.add(
+		 				GetRoleResponse.builder()
+		 				.authorities(role.getAuthorities().stream().map(Authority::getName)
+		 				.collect(Collectors.toList()))
+		 				.rolename(role.getRolename())
+		 				.id(role.getId())
+		 				.build()
+		 					);
+		 	}
+		 	
+		 
+	        return new ResponseEntity<>(response,HttpStatus.OK);
 	    }
 	 
 	 @DeleteMapping("/{id}")

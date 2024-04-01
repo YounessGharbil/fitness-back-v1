@@ -13,6 +13,6 @@ public class UpdateStaffRequest {
 	
 	private Long id;
 
-	private String role_name;
+	private String rolename;
 
 }

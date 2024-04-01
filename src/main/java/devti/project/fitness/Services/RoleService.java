@@ -11,7 +11,7 @@ import devti.project.fitness.Repositories.RoleRepository;
 import devti.project.fitness.entities.Authority;
 import devti.project.fitness.entities.Role;
 import devti.project.fitness.entities.requests.role.CreateRoleRequest;
-import jakarta.validation.Valid;
+import devti.project.fitness.entities.requests.role.UpdateRoleRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,12 +23,14 @@ public class RoleService {
 
 	 
 	 public Role getRole(Long id) {
+		 
 	    	Role role=roleRepository.findById(id).isPresent()?roleRepository.findById(id).get():null;
 
 	        return role;
 	    }
 	 
 	 public Role getRoleByRole_name(String role_name) {
+		 
 	    	Role role=roleRepository.findByRolename(role_name).isPresent()?roleRepository.findByRolename(role_name).get():null;
 
 	        return role;
@@ -41,6 +43,7 @@ public class RoleService {
 	    }
 	    
 	    public Role createRole(CreateRoleRequest createRoleRequest) {
+	    	
 	        List<Authority> authorities = new ArrayList<>();
 	        for (String authorityName : createRoleRequest.getAuthorities()) {
 	            Authority authority = createOrGetAuthority(authorityName);
@@ -55,9 +58,22 @@ public class RoleService {
 	        return roleRepository.save(role);
 	    }
 	 
-	    public Role updateRole(@Valid Role role) {	        
+	    public Role updateRole( UpdateRoleRequest updateRoleRequest) {	      
+	    	
+	    	Role role=roleRepository.findById(updateRoleRequest.getId()).get();
+	    	
+	    	List<Authority> authorities = new ArrayList<>();
+	    	
+	        for (String authorityName : updateRoleRequest.getAuthorities()) {
+	            Authority authority = createOrGetAuthority(authorityName);
+	            authorities.add(authority);
+	        }
+	        
+	        role.setAuthorities(authorities);
+	        role.setRolename(updateRoleRequest.getRolename());
 	       
 	        return roleRepository.save(role);
+	        
 	    }
 	 
 	    public String deleteRole(Long id) {

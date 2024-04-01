@@ -46,8 +46,7 @@ import devti.project.fitness.entities.requests.subscription.GetPaymentResponse;
 import devti.project.fitness.entities.requests.subscription.GetSubscriptionResponse;
 import devti.project.fitness.entities.requests.subscription.UpdateSubscriptionRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @RestController
 @RequestMapping("/Subscription")
@@ -74,6 +73,14 @@ public class SubscriptionController {
     	Contact contact =contactService.getContact(createSubscriptionRequest.getSubscribedContact_id());
     	    	
     	Package pack=packageService.getPackage(createSubscriptionRequest.getSubscribedPackage_id());
+    	
+    	 double totalPaymentTranchesAmount = createSubscriptionRequest.getPaymentMode().getPaymentTranches().stream()
+    	            .mapToDouble(CreatePaymentTrancheRequest::getAmount)
+    	            .sum();
+    	    
+    	    if (totalPaymentTranchesAmount > pack.getPrice()) {
+    	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    	    }
     	
     	Role role=roleService.getRoleByRole_name("ROLE_CLIENT");
     	
@@ -217,10 +224,8 @@ public class SubscriptionController {
 //    	 
 //    	 if (authentication != null && authentication.isAuthenticated()) {
 //             String username = authentication.getName();
-//             System.out.println("++++++++++++++++++++++++++++++++");
 //             System.out.println(username);
 //             System.out.println(authentication.getAuthorities().toString());
-//             System.out.println("--------------------------------");
 //
 //         } 
     	
@@ -295,6 +300,9 @@ public class SubscriptionController {
   
     	Subscription sub=subscriptionService.getSubscription(id);
     	
+    	 if (!arePaymentTranchesFullyPaid(sub)) {
+    	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    	    }
     	
     	double price=sub.getSubscribedPackage().getPrice();
        
@@ -302,16 +310,29 @@ public class SubscriptionController {
         	
         	Package pack =packageService.getPackage(updateSubscriptionRequest.getSubscribedPackage_id());
         	
-        	 LocalDate existingEndDate = LocalDate.parse(sub.getEndDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-             
-             LocalDate newEndDate = existingEndDate.plusMonths(pack.getDurationInMonths());
-             
-             String formattedNewEndDate = newEndDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//        	 LocalDate existingEndDate = LocalDate.parse(sub.getEndDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//             
+//             LocalDate newEndDate = existingEndDate.plusMonths(pack.getDurationInMonths());
+//             
+//             String formattedNewEndDate = newEndDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
 //             sub.setStartDate(sub.getEndDate());
-             sub.setStartDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        	
+        	Date startDate = new Date();
+            
+            calendar.setTime(startDate);
 
-             sub.setEndDate(formattedNewEndDate);
+        	calendar.add(Calendar.MONTH, pack.getDurationInMonths());
+        	
+        	Date endDate = calendar.getTime();
+        	
+        	String startDateString = dateFormat.format(startDate);
+        	
+            String endDateString = dateFormat.format(endDate);
+            
+             sub.setStartDate(startDateString);
+
+             sub.setEndDate(endDateString);
         }
         
         if (updateSubscriptionRequest.getStatus() != null) {
@@ -359,6 +380,18 @@ public class SubscriptionController {
            
         subscriptionService.deleteSubscription(id);
         return new ResponseEntity<>("deleted successfully",HttpStatus.NO_CONTENT);
+    }
+    
+    
+    private boolean arePaymentTranchesFullyPaid(Subscription subscription) {
+        PaymentMode paymentMode = subscription.getPaymentMode();
+        List<PaymentTranche> tranches = paymentMode.getPaymentTranches();
+        for (PaymentTranche tranche : tranches) {
+            if (!tranche.isTranchePaid()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
