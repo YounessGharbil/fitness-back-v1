@@ -93,7 +93,7 @@ public class AppInitializer implements CommandLineRunner {
 		Contact adminContact=Contact.builder()
 				.nom("admin")
 				.prenom("admin")
-				.adresse("admin adress")
+				.adresse("admin address")
 				.dateNaissance("12/12/12")
 				.codePostal("90000")
 				.sexe("HOMME")
